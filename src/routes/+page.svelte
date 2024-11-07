@@ -1,10 +1,29 @@
 <script>
-    import { writable } from 'svelte/store'
     import { onMount } from 'svelte';
+    import { userId, getID, mobileDeviceTest } from '$lib/store';
 
-    let userID = 0;
+    getID();
 
+    let tempID;
+    let mobileCheck = false;
+
+    
+    onMount(async () => {
+        if (mobileDeviceTest()) {
+            mobileCheck = true
+            return;
+        }
+        userId.subscribe( (val) => { tempID = val });
+    })
+
+
+    function signedInCheck() {
+        if (!tempID) {
+            window.location.href = "/login"
+        }
+    }
 </script>
+{#if !mobileCheck}
 <header>
     <nav>
         <ul>
@@ -18,9 +37,11 @@
                     </g>
                 </svg>
             </a></li>
-            <li id="flashcardBTN"><a href="/catalog">Flashcards</a></li>
-            <li id="signupRedir" class="loginsignup"><a href="/signup">Sign Up</a></li>
-            <li id="loginRedir" class="loginsignup"><a href="/login">Log In</a></li>
+            <li id="flashcardBTN" ><a href="/catalog" on:click={signedInCheck}>Flashcards</a></li>
+            {#if !tempID}
+                <li id="signupRedir" class="loginsignup"><a href="/signup">Sign Up</a></li>
+                <li id="loginRedir" class="loginsignup"><a href="/login">Log In</a></li>
+            {/if}
         </ul>
     </nav>
 
@@ -34,7 +55,7 @@
         </div>
     </div>
 </header>
-
+{/if}
 <style>
     /* Scoped styles (CSS from index.css) */
     * {
@@ -63,8 +84,8 @@
     }
 
     nav svg {
-        width: 3em;
-        height: 3em;
+        width: 2em;
+        height: 2em;
         transform: translate(10%, 0%);
     }
 

@@ -2,14 +2,19 @@
     import { initializeApp } from 'firebase/app';
     import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
     import { getFirestore, doc, setDoc } from 'firebase/firestore';
-    import { userId, firebaseConfig } from '../store'
+    import { userId, firebaseConfig, mobileDeviceTest } from '$lib/store'
     import { onMount } from 'svelte';
 
     let firebaseApp = initializeApp(firebaseConfig);
     let tempID;
-    userId.subscribe( (val) => { tempID = val })
+    let mobileCheck = false;
     
     onMount( () => {
+        if (mobileDeviceTest()) {
+            mobileCheck = true
+            return;
+        }
+        userId.subscribe( (val) => { tempID = val })
         if (tempID) {
             changeWindow("/catalog");
         }
@@ -82,7 +87,7 @@
 
 </script>
 
-
+{#if !mobileCheck}
 <a href="/"><button id="back"><i class="fa-solid fa-rotate-left"></i>Back</button></a>
 <div id="signup">
     <h2>Sign Up:</h2>
@@ -106,7 +111,7 @@
         <a href="/login"><button>Login</button></a>
     </div>
 </div>
-
+{/if}
 
 <style>
 * {
@@ -180,7 +185,7 @@ br, hr {
     width: 100%;
 }
 
-#warning-popup {
+/* #warning-popup {
     margin-left: 24.5%;
     width: 50%;
     background-color: rgb(223, 43, 43);
@@ -191,7 +196,7 @@ br, hr {
     position: absolute;
     opacity: 95%;
     animation: fadeout 4.5s ease-in 0s 1 forwards;
-}
+} */
 
 @keyframes fadeout {
     0% {opacity: 95%;}
