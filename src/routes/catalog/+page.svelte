@@ -1,5 +1,5 @@
 <script>
-    import { userId, getID, firebaseConfig } from '$lib/store'
+    import { userId, getID, firebaseConfig, logOut } from '$lib/store'
     import { initializeApp } from 'firebase/app';
     import { getFirestore, doc, getDoc } from 'firebase/firestore';
     import { getAuth, signOut } from 'firebase/auth';
@@ -15,12 +15,6 @@
     let name;
     let storedData = [];
     let setsCount = 0;
-
-    // if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
-    //     if (localStorage?.getItem("userID")) {
-    //         userId.set(localStorage.getItem("userID"));
-    //     }
-    // }
 
     onMount(async () => {
             userId.subscribe(async (val) => { 
@@ -52,14 +46,6 @@
         }
     });
 
-    function logOut() {
-        if (tempID) {
-            localStorage?.removeItem("userID");
-            userId.set("");
-            signOut(auth);
-        }
-    }
-
     function rerouteNew() {
         if (tempID) {
             window.location.href = "/new";
@@ -72,7 +58,7 @@
         <ul>
             <li><a href = "/">Home</a></li>
             <li><a href = "/catalog">Flashcards</a></li>
-            <li class="loginsignup" id="signoutBTN"><a on:click={logOut} href="/">Sign Out</a></li>
+            <li class="loginsignup" id="signoutBTN"><a on:click={logOut(tempID, auth)} href="/">Sign Out</a></li>
         </ul>
     </nav>
 
