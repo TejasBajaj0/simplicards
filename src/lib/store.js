@@ -13,17 +13,17 @@ export function getID() {
 
 export const firebaseConfig = {
 
-    apiKey: "AIzaSyBcgaRc52zpo-7XhqNwbOfZfoOBzTLE-Mo",
+    apiKey: private,
 
-    authDomain: "flashcards-9d658.firebaseapp.com",
+    authDomain: private,
 
-    projectId: "flashcards-9d658",
+    projectId: private,
 
-    storageBucket: "flashcards-9d658.appspot.com",
+    storageBucket: private,
 
-    messagingSenderId: "308921878646",
+    messagingSenderId: private,
 
-    appId: "1:308921878646:web:59ec309dbcebbf8ca47757"
+    appId: private
 
 };
 
